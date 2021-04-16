@@ -1,10 +1,7 @@
 package AutomaticTG.utility;
-
-
 import java.util.Scanner;
 
 public class Menu {
-	
 	public int mainMenu() throws Exception{
 		Scanner sc =new Scanner(System.in);
 		System.out.println("_________Menu_________");
@@ -14,8 +11,7 @@ public class Menu {
 		System.out.println();
 		System.out.print("Enter Your Choice :");
 		System.out.println();
-		return sc.nextInt();		
-		
+		return sc.nextInt();			
 	}
 	public int searchMenu() throws Exception{
 		Scanner sc =new Scanner(System.in);
@@ -27,7 +23,6 @@ public class Menu {
 		int ch1=sc.nextInt();
 		sc.nextLine();
 		return ch1;
-	
 	}
 	public int colourMenu()  throws Exception{
 		Scanner sc =new Scanner(System.in);
@@ -42,6 +37,5 @@ public class Menu {
 		sc.nextLine();
 		return ch2;
 	}
-
 }
 

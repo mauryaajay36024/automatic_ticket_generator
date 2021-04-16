@@ -4,7 +4,6 @@ import AutomaticTG.core.Slot;
 import AutomaticTG.core.Vehicle;
 
 public class SlotOperation {
-	
 	Scanner sc=new Scanner(System.in);
 	AutomaticTG.core.Slot slot=new Slot(2,2);
 	
@@ -15,9 +14,8 @@ public class SlotOperation {
 		System.out.print("Enter Vehicle Colour :");
 		String colour=sc.nextLine();
 		
-		/**
-		 * To check if same registration vehicle is not available
-		 */
+		
+		 //To check if same registration vehicle is not available
 		for (int i = 0; i < slot.getParkingSlots().length; i++) {
 			if(Slot.parkingSlots[i]!=null && slot.getParkingSlots()[i].getRegNo().equals(regNo)){
 				validInfo=false;
@@ -25,15 +23,12 @@ public class SlotOperation {
 				break;
 			}
 		}
-		if(validInfo)
+		if(validInfo) {
 			validator(regNo, colour);
-			
-		
-		}
-	/**
-	 * to check if entered info is valid or not
-	 */
+		}		
+	}
 	
+	 //To check if entered info is valid or not
 	public void validator(String regNo,String colour) {
 		String colourRegex="[a-zA-Z]+";
 		String regNoRegex="^[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{2}[0-9]{4}";
@@ -44,27 +39,23 @@ public class SlotOperation {
 			vehicle.setColour(colour);
 			ticketGenerator(vehicle);
 			}
-		else
+		else {
 			System.err.println("Wrong Input !!!");
-		
+		}	
 	}
-	
-	
 	public void ticketGenerator(Vehicle vehicle) {
-			for (int i = 0; i < slot.getParkingSlots().length; i++) {
-				if(slot.getParkingSlots()[i]==null) {
-					slot.getParkingSlots()[i]=vehicle;
-					/**
-					 * Now print Ticket
-					 */
-					System.out.println("______Ticket_____");
-					System.out.println(slot.getParkingSlots()[i]);
-					System.out.println("Vechicle slot number :"+ (i+1));
-					break;
-				}
+		for (int i = 0; i < slot.getParkingSlots().length; i++){
+			if(slot.getParkingSlots()[i]==null) {
+				slot.getParkingSlots()[i]=vehicle;
+				// Now print Ticket
+				System.out.println("______Ticket_____");
+				System.out.println(slot.getParkingSlots()[i]);
+				System.out.println("Vechicle slot number :"+ (i+1));
+				break;
 			}
+		}
 	}
-	public void vehicleExit() {
+	public void vehicleExit(){
 		boolean vehicleFound=false;
 		System.out.print("Enter vehicle Registration Number :");
 		String regNo=sc.nextLine();
@@ -74,13 +65,11 @@ public class SlotOperation {
 				System.out.println("Slot Number "+(i+1)+" is now Avialable ");
 				vehicleFound=true;
 				break;
-			}		
-			
+			}			
 		}
 		if(!vehicleFound) {
 			System.err.println("Vehicle Not Found !!!");
-		}
-		
+		}	
 	}
 }
 	

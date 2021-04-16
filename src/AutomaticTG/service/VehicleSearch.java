@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 import AutomaticTG.core.Slot;
 
-
 public class VehicleSearch {
 	Scanner sc=new Scanner(System.in);
 	
@@ -22,7 +21,6 @@ public class VehicleSearch {
 			System.err.println("Vehicle Not Found !!!");
 		}
 	}
-
 	public void regNumberByColour() {
 		boolean vehicleFound=false;
 		System.out.print("Enter Colour to find Registration numbers of all cars of a particular color :");
@@ -50,8 +48,6 @@ public class VehicleSearch {
 		}
 		if(!vehicleFound) {
 			System.err.println("No Vehicle Avialable with" +colour+ "Colour !!!");
-		}
-		
-	}
-	
+		}	
+	}	
 }
