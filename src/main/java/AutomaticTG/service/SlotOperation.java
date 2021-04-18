@@ -2,12 +2,17 @@ package AutomaticTG.service;
 import java.util.Scanner;
 import AutomaticTG.core.Slot;
 import AutomaticTG.core.Vehicle;
+import AutomaticTG.mysqlDatabase.MysqlService;
 
 public class SlotOperation {
 	Scanner sc=new Scanner(System.in);
-	AutomaticTG.core.Slot slot=new Slot(2,2);
-	
+	MysqlService mysqlService=new MysqlService();
+
+	Slot slot=new Slot(5,20);
+
 	public void registerVehicle() {
+		//Load data from Database to Array
+		mysqlService.loadDataToArray(slot);
 		boolean validInfo=true;
 		System.out.print("Enter Vehicle No :");
 		String regNo=sc.nextLine();
@@ -51,17 +56,26 @@ public class SlotOperation {
 				System.out.println("______Ticket_____");
 				System.out.println(slot.getParkingSlots()[i]);
 				System.out.println("Vechicle slot number :"+ (i+1));
+
+				/**
+				 * Inserting Ticket Info to Mysql database
+				 */
+				mysqlService.addToDb(slot.getParkingSlots()[i].getRegNo(),slot.getParkingSlots()[i].getColour(),(i+1));
 				break;
 			}
 		}
 	}
 	public void vehicleExit(){
+		//Load the Data from Database into Array
+		mysqlService.loadDataToArray(slot);
 		boolean vehicleFound=false;
 		System.out.print("Enter vehicle Registration Number :");
 		String regNo=sc.nextLine();
 		for (int i = 0; i < Slot.parkingSlots.length; i++) {
 			if(Slot.parkingSlots[i].getRegNo().equals(regNo)) {
 				Slot.parkingSlots[i]=null;
+				//Delete from database
+				mysqlService.removeFromDb(regNo);
 				System.out.println("Slot Number "+(i+1)+" is now Avialable ");
 				vehicleFound=true;
 				break;

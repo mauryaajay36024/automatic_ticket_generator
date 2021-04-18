@@ -8,6 +8,7 @@ public class Menu {
 		System.out.println("1. Generate Ticket");
 		System.out.println("2. Deallocate Slot");
 		System.out.println("3. Searching");
+		System.out.println("0. Exit");
 		System.out.println();
 		System.out.print("Enter Your Choice :");
 		System.out.println();
