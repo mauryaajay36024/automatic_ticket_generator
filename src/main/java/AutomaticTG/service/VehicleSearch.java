@@ -5,7 +5,7 @@ import AutomaticTG.core.Slot;
 
 public class VehicleSearch {
 	Scanner sc=new Scanner(System.in);
-	
+
 	public void searchByRegNo() {
 		boolean vehicleFound=false;
 		System.out.print("Enter Registration no to search vehicle Slot :");
@@ -38,7 +38,7 @@ public class VehicleSearch {
 
 	public void slotByColour() {
 		boolean vehicleFound=false;
-		System.out.print("Enter Colour to find slot numbers of all Vehicle of a particular color is parked");
+		System.out.print("Enter Colour to find slot numbers of all Vehicle of a particular color is parked: ");
 		String colour=sc.nextLine();
 		for (int i = 0; i < Slot.parkingSlots.length; i++) {
 			if(Slot.parkingSlots[i]!=null && Slot.parkingSlots[i].getColour().equalsIgnoreCase(colour)) {
@@ -47,7 +47,7 @@ public class VehicleSearch {
 			}
 		}
 		if(!vehicleFound) {
-			System.err.println("No Vehicle Avialable with" +colour+ "Colour !!!");
-		}	
-	}	
+			System.err.println("No Vehicle Avialable with " +colour+ " Colour !!!");
+		}
+	}
 }

@@ -11,7 +11,7 @@ public class Slot{
 		Slot.parkingSlots=new Vehicle[noOfFloor*spaceAtEachFloor];
 	}
 
-	public Vehicle[] getParkingSlots() {
+	public  Vehicle[] getParkingSlots() {
 		return parkingSlots;
 	}
 
