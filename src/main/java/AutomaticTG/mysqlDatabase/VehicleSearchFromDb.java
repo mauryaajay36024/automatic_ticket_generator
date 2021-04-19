@@ -1,9 +1,5 @@
 package AutomaticTG.mysqlDatabase;
-
-import AutomaticTG.core.Slot;
-import AutomaticTG.core.Vehicle;
 import AutomaticTG.utility.MysqlDb;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,59 +7,84 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class VehicleSearchFromDb {
-    Scanner sc=new Scanner(System.in);
-    MysqlDb mysqlDb=new MysqlDb();
+    Scanner sc = new Scanner(System.in);
+    MysqlDb mysqlDb = new MysqlDb();
     //Connection is created here with Mysql Database
-    Connection connection=mysqlDb.createConnection();
+    Connection connection = mysqlDb.createConnection();
 
     public void searchByRegNo() {
-        boolean vehicleFound=false;
+        boolean vehicleFound = false;
         System.out.print("Enter Registration no to search vehicle Slot :");
-        String regNo=sc.nextLine();
+        String regNo = sc.nextLine();
         try {
-            Statement statement =connection.createStatement();
+            Statement statement = connection.createStatement();
 
-            String qry="SELECT * FROM parking_system";
-            ResultSet rs=statement.executeQuery(qry);
-            while(rs.next()){
-                String registrationNumber=rs.getString(1);
-                if(regNo.equals(registrationNumber)){
-                    System.out.println("Slot Number for "+regNo+" is "+rs.getInt(3));
+            String qry = "SELECT * FROM parking_system";
+            ResultSet rs = statement.executeQuery(qry);
+            while (rs.next()) {
+                String registrationNumber = rs.getString(1);
+                if (regNo.equalsIgnoreCase(registrationNumber)) {
+                    vehicleFound = true;
+                    System.out.println("Slot Number for " + regNo + " is " + rs.getInt(3));
                     break;
                 }
+            }
+            if (!vehicleFound) {
+                System.err.println("Vehicle not available");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
     }
+
     public void regNumberByColour() {
-        boolean vehicleFound=false;
-        System.out.print("Enter Colour to find Registration numbers of all cars of a particular color :");
-        String colour=sc.nextLine();
-        for (int i = 0; i < Slot.parkingSlots.length; i++) {
-            if(Slot.parkingSlots[i]!=null && Slot.parkingSlots[i].getColour().equalsIgnoreCase(colour)) {
-                System.out.println("Registration Number : "+Slot.parkingSlots[i].getRegNo());
-                vehicleFound=true;
+        boolean vehicleFound = false;
+        System.out.print("Enter Colour to search all vehicles Registration Number :");
+        String vehicleColour = sc.nextLine();
+        try {
+            Statement statement = connection.createStatement();
+
+            String qry = "SELECT * FROM parking_system";
+            ResultSet rs = statement.executeQuery(qry);
+            while (rs.next()) {
+                String colour = rs.getString(2);
+                if (colour.equalsIgnoreCase(vehicleColour)) {
+                    vehicleFound = true;
+                    System.out.println("Registration Number : " + rs.getString(1));
+                }
             }
+            if (!vehicleFound) {
+                System.err.println("No vehicle is available with " + vehicleColour+" Colour");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        if(!vehicleFound) {
-            System.err.println("No Vehicle Avialable with " +colour+ " Colour !!!");
-        }
+
     }
 
     public void slotByColour() {
-        boolean vehicleFound=false;
-        System.out.print("Enter Colour to find slot numbers of all Vehicle of a particular color is parked");
-        String colour=sc.nextLine();
-        for (int i = 0; i < Slot.parkingSlots.length; i++) {
-            if(Slot.parkingSlots[i]!=null && Slot.parkingSlots[i].getColour().equalsIgnoreCase(colour)) {
-                System.out.println("Slot Number : "+(i+1));
-                vehicleFound=true;
+        boolean vehicleFound = false;
+        System.out.print("Enter Colour to find slot numbers of all Vehicle of a particular color is parked :");
+        String vehicleColour = sc.nextLine();
+        try {
+            Statement statement = connection.createStatement();
+
+            String qry = "SELECT * FROM parking_system";
+            ResultSet rs = statement.executeQuery(qry);
+            while (rs.next()) {
+                String colour = rs.getString(2);
+                if (colour.equalsIgnoreCase(vehicleColour)) {
+                    vehicleFound = true;
+                    System.out.println("Slot Number : "+ rs.getInt(3));
+                }
             }
+            if (!vehicleFound) {
+                System.err.println("No vehicle is available with " + vehicleColour+" Colour");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        if(!vehicleFound) {
-            System.err.println("No Vehicle Avialable with" +colour+ "Colour !!!");
-        }
+
     }
 }

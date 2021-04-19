@@ -13,7 +13,7 @@ public class MysqlDb {
             connection= DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD"));
 
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             return connection;
         }
