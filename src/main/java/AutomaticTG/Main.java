@@ -1,4 +1,5 @@
 package AutomaticTG;
+import AutomaticTG.mysqlDatabase.MysqlService;
 import AutomaticTG.mysqlDatabase.VehicleSearchFromDb;
 import AutomaticTG.service.SlotOperation;
 import AutomaticTG.service.VehicleSearch;
@@ -10,6 +11,7 @@ public class Main {
 		Menu menu=new Menu();
 
 		SlotOperation tgService=new SlotOperation();
+		MysqlService mysqlService=new MysqlService();
 		VehicleSearch search=new VehicleSearch();
 		VehicleSearchFromDb vehicleSearchFromDb=new VehicleSearchFromDb();
 		while(true) {
@@ -19,9 +21,11 @@ public class Main {
 					case 1:
 						tgService.registerVehicle();
 						break;
-					//Slot deallocation
+					//Slot De-allocation
 					case 2:
-						tgService.vehicleExit();
+						//tgService.vehicleExit(); //Method to remove vehicle In memory
+						mysqlService.removeFromDb();
+
 						break;
 					//Searching
 					case 3:
@@ -31,14 +35,16 @@ public class Main {
 								switch(menu.colourMenu()) {
 									case 1:
 										//Registration numbers of all cars of a particular colour.
-										search.regNumberByColour();
+										//search.regNumberByColour(); //uncomment this for in  memory
+										vehicleSearchFromDb.regNumberByColour();
 										break;
 									case 2:
 										//Slot numbers of all slots where a car of a particular colour is parked.
-										search.slotByColour();
+										//search.slotByColour();
+										vehicleSearchFromDb.slotByColour();
 										break;
 									default:
-										System.err.println("Invalit Choice !!!");
+										System.err.println("Invalid Choice !!!");
 										break;
 									}
 									break;
