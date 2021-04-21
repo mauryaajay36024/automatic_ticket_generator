@@ -12,7 +12,7 @@ public class Menu {
 		System.out.println();
 		System.out.print("Enter Your Choice :");
 		System.out.println();
-		return sc.nextInt();			
+		return sc.nextInt();
 	}
 	public int searchMenu() throws Exception{
 		Scanner sc =new Scanner(System.in);

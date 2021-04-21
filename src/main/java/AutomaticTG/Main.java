@@ -1,5 +1,5 @@
 package AutomaticTG;
-import AutomaticTG.mysqlDatabase.MysqlService;
+import AutomaticTG.clients.MysqlClient;
 import AutomaticTG.service.SlotOperation;
 import AutomaticTG.service.VehicleSearch;
 import AutomaticTG.utility.Menu;
@@ -9,51 +9,43 @@ public class Main {
 		System.out.println("\t\t\t\t Automatic Parking System");
 		Menu menu=new Menu();
 		SlotOperation tgService=new SlotOperation();
-		MysqlService mysqlService=new MysqlService();
+		MysqlClient mysqlClient =new MysqlClient();
 		//Vehicle Search service (In memory)
 		VehicleSearch search=new VehicleSearch();
-
 		while(true) {
 			try {
 				switch(menu.mainMenu()) {
-					//Ticket generation
-					case 1:
+					case 1://Ticket generation
 						tgService.registerVehicle();
 						break;
-					//Slot De-allocation
-					case 2:
+					case 2://Slot De-allocation
 						//tgService.vehicleExit(); //Method to remove vehicle (In memory)
-						mysqlService.removeFromDb();
-
+						mysqlClient.removeFromDb();
 						break;
-					//Searching
-					case 3:
+					case 3://Searching
 						switch(menu.searchMenu()) {
-							case 1:
-								//Search by colour
+							case 1://Search by colour
 								switch(menu.colourMenu()) {
-									case 1:
-										//Registration numbers of all cars of a particular colour.
+									case 1://Registration numbers of all cars of a particular colour.
 										//search.regNumberByColour(); //uncomment this for in  memory
-										mysqlService.regNumberByColour();
+										mysqlClient.regNumberByColour();
 										break;
 									case 2:
 										//Slot numbers of all slots where a car of a particular colour is parked.
 										//search.slotByColour();
-										mysqlService.slotByColour();
+										mysqlClient.slotByColour();
 										break;
 									default:
 										System.err.println("Invalid Choice !!!");
 										break;
-									}
-									break;
+								}
+								break;
 							case 2:
 								//Search  by Registration Number
-//								search.searchByRegNo();
-								mysqlService.searchByRegNo();
-
+								// search.searchByRegNo();
+								mysqlClient.searchByRegNo();
 								break;
-							}
+						}
 						break;
 					case 0:
 						System.exit(0);
