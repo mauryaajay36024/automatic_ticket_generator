@@ -28,10 +28,9 @@ public class Menu {
 	public int colourMenu()  throws Exception{
 		Scanner sc =new Scanner(System.in);
 		System.out.println();
-		System.out.println("---Search By Colour---");
-		System.out.println();
-		System.out.println("1.Registration numbers");
-		System.out.println("2.Slot numbers ");
+		System.out.println("What you want to search ?");
+		System.out.println("1.Registration numbers ");
+		System.out.println("2.Slot numbers ?");
 		System.out.println();
 		System.out.print("Enter Your choice:");
 		int ch2=sc.nextInt();
