@@ -1,49 +1,46 @@
 package AutomaticTG;
+import AutomaticTG.clients.Client;
+import AutomaticTG.clients.InMemoryClient;
 import AutomaticTG.clients.MysqlClient;
-import AutomaticTG.service.SlotOperation;
-import AutomaticTG.service.VehicleSearch;
 import AutomaticTG.utility.Menu;
 
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("\t\t\t\t Automatic Parking System");
 		Menu menu=new Menu();
-		SlotOperation tgService=new SlotOperation();
-		MysqlClient mysqlClient =new MysqlClient();
-		//Vehicle Search service (In memory)
-		VehicleSearch search=new VehicleSearch();
+
+		Client client=new InMemoryClient();
+		//Getting client type from property file
+		String clientName=client.configFile();
+		if(clientName.equalsIgnoreCase("mySql")){
+			client=new MysqlClient();
+		}
 		while(true) {
 			try {
 				switch(menu.mainMenu()) {
 					case 1://Ticket generation
-						tgService.registerVehicle();
+						client.vehicleEntry();
 						break;
 					case 2://Slot De-allocation
-						//tgService.vehicleExit(); //Method to remove vehicle (In memory)
-						mysqlClient.removeFromDb();
+						client.vehicleExit();
 						break;
 					case 3://Searching
 						switch(menu.searchMenu()) {
 							case 1://Search by colour
 								switch(menu.colourMenu()) {
 									case 1://Registration numbers of all cars of a particular colour.
-										//search.regNumberByColour(); //uncomment this for in  memory
-										mysqlClient.regNumberByColour();
+										client.regNumberByColour();
 										break;
-									case 2:
-										//Slot numbers of all slots where a car of a particular colour is parked.
-										//search.slotByColour();
-										mysqlClient.slotByColour();
+									case 2://Slot numbers of all slots where a car of a particular colour is parked.
+										client.slotByColour();
 										break;
 									default:
 										System.err.println("Invalid Choice !!!");
 										break;
 								}
 								break;
-							case 2:
-								//Search  by Registration Number
-								// search.searchByRegNo();
-								mysqlClient.searchByRegNo();
+							case 2://Search  by Registration Number
+								client.searchByRegNo();
 								break;
 						}
 						break;
