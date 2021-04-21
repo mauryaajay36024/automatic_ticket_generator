@@ -1,19 +1,26 @@
-package AutomaticTG.mysqlDatabase;
+package AutomaticTG.clients;
 import AutomaticTG.core.Vehicle;
 import AutomaticTG.utility.MysqlDb;
 
 import java.sql.*;
 import java.util.Scanner;
 
-public class MysqlService {
+public class MysqlClient {
     Scanner sc=new Scanner(System.in);
     MysqlDb mysqlDb=new MysqlDb();
     //Connection is created here with Mysql Database
     Connection connection=mysqlDb.createConnection();
+    Statement statement;
+    {
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     public void addToDb(Vehicle vehicle) {
         try {
-            Statement statement = connection.createStatement();
             String qry1 = "SELECT * FROM PARKING_SYSTEM";
             ResultSet rs = statement.executeQuery(qry1);
             boolean flag = false;
@@ -79,7 +86,6 @@ public class MysqlService {
     }
     public void displayTicket(String regNo){
         try {
-            Statement statement = connection.createStatement();
             String qry = "SELECT * FROM parking_system";
             ResultSet rs = statement.executeQuery(qry);
             while (rs.next()) {
@@ -102,13 +108,11 @@ public class MysqlService {
         System.out.print("Enter Registration no to search vehicle Slot :");
         String regNo = sc.nextLine();
         try {
-            Statement statement = connection.createStatement();
-
             String qry = "SELECT * FROM parking_system";
             ResultSet rs = statement.executeQuery(qry);
             while (rs.next()) {
                 String registrationNumber = rs.getString(1);
-                if (regNo.equalsIgnoreCase(registrationNumber)) {
+                if (registrationNumber !=null && registrationNumber.equalsIgnoreCase(regNo)) {
                     vehicleFound = true;
                     System.out.println("Slot Number for " + regNo + " is " + rs.getInt(3));
                     break;
@@ -120,20 +124,17 @@ public class MysqlService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
     public void regNumberByColour() {
         boolean vehicleFound = false;
         System.out.print("Enter Colour to search all vehicles Registration Number :");
         String vehicleColour = sc.nextLine();
         try {
-            Statement statement = connection.createStatement();
-
-            String qry = "SELECT * FROM parking_system";
+            String qry = "SELECT * FROM PARKING_SYSTEM";
             ResultSet rs = statement.executeQuery(qry);
             while (rs.next()) {
                 String colour = rs.getString(2);
-                if (colour.equalsIgnoreCase(vehicleColour)) {
+                if (colour !=null && colour.equalsIgnoreCase(vehicleColour)) {
                     vehicleFound = true;
                     System.out.println("Registration Number : " + rs.getString(1));
                 }
@@ -144,21 +145,17 @@ public class MysqlService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
-
     public void slotByColour() {
         boolean vehicleFound = false;
         System.out.print("Enter Colour to find slot numbers of all Vehicle of a particular color is parked :");
         String vehicleColour = sc.nextLine();
         try {
-            Statement statement = connection.createStatement();
-
             String qry = "SELECT * FROM parking_system";
             ResultSet rs = statement.executeQuery(qry);
             while (rs.next()) {
                 String colour = rs.getString(2);
-                if (colour.equalsIgnoreCase(vehicleColour)) {
+                if (colour !=null && colour.equalsIgnoreCase(vehicleColour)) {
                     vehicleFound = true;
                     System.out.println("Slot Number : "+ rs.getInt(3));
                 }
@@ -169,6 +166,5 @@ public class MysqlService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 }

@@ -4,7 +4,7 @@ public class Slot{
 	private Integer noOfFloor;
 	private Integer spaceAtEachFloor;
 	public  static Vehicle[] parkingSlots;
-	
+
 	public Slot(Integer noOfFloor, Integer spaceAtEachFloor) {
 		this.noOfFloor = noOfFloor;
 		this.spaceAtEachFloor = spaceAtEachFloor;
@@ -30,5 +30,5 @@ public class Slot{
 	}
 	public void setSpaceAtEachFloor(Integer spaceAtEachFloor) {
 		this.spaceAtEachFloor = spaceAtEachFloor;
-	}	
+	}
 }
