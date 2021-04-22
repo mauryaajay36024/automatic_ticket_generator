@@ -1,4 +1,4 @@
-package AutomaticTG.utility;
+package automatictg.utility;
 import java.util.Scanner;
 
 public class Menu {
