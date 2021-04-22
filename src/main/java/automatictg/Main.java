@@ -18,6 +18,9 @@ public class Main {
 		String clientName=applicationConfig.getClient();
 		if(clientName.equalsIgnoreCase("mySql")){
 			client=new MysqlClient();
+			MysqlClient mysqlClient= (MysqlClient) client;
+			//Creating table in database
+			mysqlClient.createTable();
 		}
 		while(true) {
 			try {

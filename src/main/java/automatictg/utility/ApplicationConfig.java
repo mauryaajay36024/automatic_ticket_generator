@@ -15,7 +15,6 @@ public class ApplicationConfig {
             Class.forName(properties.getProperty("DRIVER"));
             this.setConnection(DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD")));
             this.setStatement(connection.createStatement());
-
             this.setClient(properties.getProperty("CLIENT"));
         }catch(Exception e){
             System.out.println(e.getMessage());

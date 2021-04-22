@@ -8,25 +8,19 @@ import java.util.Scanner;
 
 public class MysqlClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
-    //To check it should not allocate more than available space;
-    Slot slot=new Slot(1,2);
-    ApplicationConfig appConfig=new ApplicationConfig();
+    Slot slot=new Slot(5,20);
     //Connection is created here with Mysql Database
+    ApplicationConfig appConfig=new ApplicationConfig();
 
     public void vehicleEntry() {
-        //TODO
-        //createTable();
-         // registerVehicle() will only return vehicle object when entered info are valid.
+        // registerVehicle method will only return vehicle object when entered info are valid.
         Vehicle vehicle=registerVehicle();
         if(vehicle !=null) {
-            //TODO
             if (isSlotAvailable()) {
                 try {
                     String qry1 = "SELECT registrationNumber,colour,slot FROM PARKING_SYSTEM";
                     ResultSet rs = appConfig.getStatement().executeQuery(qry1);
-                    boolean flag = false;
                     while (rs.next()) {
-                        //To allocate slot in between if there is parking slot is available.
                         if (rs.getString(1) == null) {
                             String query = "UPDATE PARKING_SYSTEM SET registrationNumber=?,colour=?" +
                                     "WHERE slot=?";
@@ -37,26 +31,8 @@ public class MysqlClient extends BaseClient {
                             statement1.executeUpdate();
                             System.out.println();
                             System.out.println("Data Inserted to Database");
-                            //Display Ticket
                             displayTicket(vehicle.getRegNo());
-                            flag = true;
                             break;
-                        }
-
-                    }//If vehicle getting slot 1st time or one after another in sequence.
-                    if (!flag) {
-                        String qry = "INSERT INTO PARKING_SYSTEM(registrationNumber,colour) VALUES(?,?)";
-                        try {
-                            PreparedStatement statement2 = appConfig.getConnection().prepareStatement(qry);
-                            statement2.setString(1, vehicle.getRegNo());
-                            statement2.setString(2, vehicle.getColour());
-                            statement2.executeUpdate();
-                            System.out.println();
-                            System.out.println("Data Inserted Into Database");
-                            //Display ticket
-                            displayTicket(vehicle.getRegNo());
-                        } catch (SQLException throwable) {
-                            System.out.println(throwable.getMessage());
                         }
                     }
                 } catch (Exception e) {
@@ -94,7 +70,6 @@ public class MysqlClient extends BaseClient {
     public void vehicleExit(){
         System.out.print("Enter Vehicle Registration Number :");
         String regNo=sc.nextLine();
-        //To check if Entered vehicle in database or not ?
         if(isVehicleAvailable(regNo)) {
             String qry = "UPDATE parking_system SET registrationNumber=?,colour=? WHERE registrationNumber=?";
             try {
@@ -191,20 +166,21 @@ public class MysqlClient extends BaseClient {
             System.out.println(throwable.getMessage());
         }
         return false;
-    }//TODO
+    }
     public boolean isSlotAvailable(){
         try {
             String qry = "SELECT * FROM PARKING_SYSTEM";
             ResultSet rs = appConfig.getStatement().executeQuery(qry);
+            int slotNumber=-1;
             while (rs.next()) {
-                //TODO
-                System.out.println(rs.getInt(3));
-                //it should take slot no which are not null
-                if(rs.getInt(3)<slot.getCapacity()) {
-                    return true;
+                if(rs.getString(1)==null && rs.getInt(3)!=0){
+                    slotNumber=rs.getInt(3);
+                    break;
                 }
             }
-
+            if(slotNumber!=-1 && slotNumber<=slot.getCapacity()) {
+                return true;
+            }
         } catch (SQLException throwable) {
             System.out.println(throwable.getMessage());
         }
@@ -212,22 +188,21 @@ public class MysqlClient extends BaseClient {
     }
     public void createTable(){
         try {
-            String qry1 = "CREATE TABLE IF NOT EXISTS PARKING_SYSTEM5(" +
+            String qry1 = "CREATE TABLE IF NOT EXISTS PARKING_SYSTEM(" +
                     "registrationNumber CHAR(10) UNIQUE," +
                     "colour VARCHAR(10)," +
-                    "slot int PRIMARY KEY AUTO_INCREMENT)";
+                    "slot int PRIMARY KEY)";
             appConfig.getStatement().execute(qry1);
-//            for(int i=0;i<slot.getCapacity();i++) {
-//                String qry2 = "INSERT INTO PARKING_SYSTEM5(registrationNumber,colour) VALUES(?,?)";
-//                PreparedStatement statement=appConfig.getConnection().prepareStatement(qry2);
-//                statement.setString(1,null);
-//                statement.setString(2,null);
-//                statement.executeUpdate();
-//                //TODO
-//                System.out.println("inside loop");
-//            }
+            for (int i = 1; i <= slot.getCapacity(); i++) {
+                String qry2 = "INSERT INTO PARKING_SYSTEM(registrationNumber,colour,slot) VALUES(?,?,?)";
+                PreparedStatement statement = appConfig.getConnection().prepareStatement(qry2);
+                statement.setString(1, null);
+                statement.setString(2, null);
+                statement.setInt(3,i);
+                statement.executeUpdate();
+            }
         } catch (SQLException throwable) {
-            System.out.println(throwable.getMessage());
+
         }
 
     }

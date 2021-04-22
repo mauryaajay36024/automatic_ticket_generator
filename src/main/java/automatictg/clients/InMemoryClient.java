@@ -5,12 +5,12 @@ import automatictg.core.Vehicle;
 
 public class InMemoryClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
-    Slot slot=new Slot(1,2);
+    Slot slot=new Slot(5,20);
 
     public void vehicleEntry() {
         boolean flag=false;
         Vehicle vehicle=availableSlot();
-        if(vehicle instanceof Vehicle ){
+        if(vehicle !=null ){
             for (int i = 0; i < slot.getParkingSlots().length; i++){
                 if(slot.getParkingSlots()[i]==null) {
                     slot.getParkingSlots()[i] = vehicle;
@@ -88,7 +88,7 @@ public class InMemoryClient extends BaseClient {
     }
     public Vehicle availableSlot() {
         Vehicle vehicle = registerVehicle();
-        if (vehicle instanceof Vehicle) {
+        if (vehicle !=null) {
             for (int i = 0; i < slot.getParkingSlots().length; i++) {
                 //To check if entered registration no is already parked
                 if (slot.getParkingSlots()[i] != null && slot.getParkingSlots()[i].getRegNo().equalsIgnoreCase(vehicle.getRegNo())) {
