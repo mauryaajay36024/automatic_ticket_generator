@@ -2,6 +2,7 @@ package automatictg;
 import automatictg.clients.BaseClient;
 import automatictg.clients.InMemoryClient;
 import automatictg.clients.MysqlClient;
+import automatictg.clients.mongodbClient;
 import automatictg.utility.Menu;
 import automatictg.utility.ApplicationConfig;
 
@@ -21,6 +22,11 @@ public class Main {
 			MysqlClient mysqlClient= (MysqlClient) client;
 			//Creating table in database
 			mysqlClient.createTable();
+		}
+		else if(clientName.equalsIgnoreCase("mongodb")){
+			client=new mongodbClient();
+			//TODO
+			System.out.println("Inside mongo");
 		}
 		while(true) {
 			try {
