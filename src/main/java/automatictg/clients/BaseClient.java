@@ -1,24 +1,10 @@
-package AutomaticTG.clients;
-import AutomaticTG.core.Vehicle;
+package automatictg.clients;
+import automatictg.core.Vehicle;
 
-import java.io.FileReader;
-import java.util.Properties;
 import java.util.Scanner;
 
-public abstract class Client {
+public abstract class BaseClient {
     Scanner sc=new Scanner(System.in);
-    public String configFile(){
-        Properties properties=null;
-        String client="";
-        try{
-            properties=new Properties();
-            properties.load(new FileReader("src/main/resources/config.properties"));
-            client=properties.getProperty("CLIENT");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return client;
-    }
 
     public Vehicle registerVehicle() {
         System.out.print("Enter Vehicle No :");

@@ -1,4 +1,4 @@
-package AutomaticTG.core;
+package automatictg.core;
 
 public class Vehicle {
 	

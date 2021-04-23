@@ -1,19 +1,26 @@
-package AutomaticTG;
-import AutomaticTG.clients.Client;
-import AutomaticTG.clients.InMemoryClient;
-import AutomaticTG.clients.MysqlClient;
-import AutomaticTG.utility.Menu;
+package automatictg;
+import automatictg.clients.BaseClient;
+import automatictg.clients.InMemoryClient;
+import automatictg.clients.MysqlClient;
+import automatictg.utility.Menu;
+import automatictg.utility.ApplicationConfig;
 
 public class Main {
 	public static void main(String[] args) {
+
 		System.out.println("\t\t\t\t Automatic Parking System");
 		Menu menu=new Menu();
+		//To initialize .Properties file
+		ApplicationConfig applicationConfig=new ApplicationConfig();
 
-		Client client=new InMemoryClient();
+		BaseClient client=new InMemoryClient();
 		//Getting client type from property file
-		String clientName=client.configFile();
+		String clientName=applicationConfig.getClient();
 		if(clientName.equalsIgnoreCase("mySql")){
 			client=new MysqlClient();
+			MysqlClient mysqlClient= (MysqlClient) client;
+			//Creating table in database
+			mysqlClient.createTable();
 		}
 		while(true) {
 			try {
@@ -51,7 +58,7 @@ public class Main {
 						break;
 				}
 			} catch (Exception e) {
-				System.err.println("Invalid Input");
+				System.err.println(e.getMessage());
 			}
 		}
 	}

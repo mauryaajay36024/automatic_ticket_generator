@@ -1,8 +1,8 @@
-package AutomaticTG.utility;
+package automatictg.utility;
 import java.util.Scanner;
 
 public class Menu {
-	public int mainMenu() throws Exception{
+	public int mainMenu() {
 		Scanner sc =new Scanner(System.in);
 		System.out.println("_________Menu_________");
 		System.out.println("1. Generate Ticket");
@@ -14,7 +14,7 @@ public class Menu {
 		System.out.println();
 		return sc.nextInt();
 	}
-	public int searchMenu() throws Exception{
+	public int searchMenu() {
 		Scanner sc =new Scanner(System.in);
 		System.out.println("---Search Menu---");
 		System.out.println("1.Search by Colour");
@@ -25,7 +25,7 @@ public class Menu {
 		sc.nextLine();
 		return ch1;
 	}
-	public int colourMenu()  throws Exception{
+	public int colourMenu() {
 		Scanner sc =new Scanner(System.in);
 		System.out.println();
 		System.out.println("What you want to search ?");

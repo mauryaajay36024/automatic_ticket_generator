@@ -1,36 +1,38 @@
-package AutomaticTG.clients;
+package automatictg.clients;
 import java.util.Scanner;
-import AutomaticTG.core.Slot;
-import AutomaticTG.core.Vehicle;
+import automatictg.core.Slot;
+import automatictg.core.Vehicle;
 
-public class InMemoryClient extends Client{
+public class InMemoryClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
     Slot slot=new Slot(5,20);
+
     public void vehicleEntry() {
-        Vehicle vehicle=registerVehicle();
-        if(vehicle instanceof Vehicle){
+        boolean flag=false;
+        Vehicle vehicle=availableSlot();
+        if(vehicle !=null ){
             for (int i = 0; i < slot.getParkingSlots().length; i++){
                 if(slot.getParkingSlots()[i]==null) {
-                    slot.getParkingSlots()[i]=vehicle;
+                    slot.getParkingSlots()[i] = vehicle;
                     // Now print Ticket
                     System.out.println("______Ticket_____");
                     System.out.println(slot.getParkingSlots()[i]);
-                    System.out.println("Vehicle slot number :"+ (i+1));
+                    System.out.println("Vehicle slot number :" + (i + 1));
+                    flag=true;
                     break;
                 }
             }
+            if (!flag) {
+                System.out.println("Parking is full");
+            }
         }
-        else{
-            System.out.println("Wrong Input");
-        }
-
     }
     public void vehicleExit(){
         boolean vehicleFound=false;
         System.out.print("Enter vehicle Registration Number :");
         String regNo=sc.nextLine();
         for (int i = 0; i < Slot.parkingSlots.length; i++) {
-            if(Slot.parkingSlots[i].getRegNo().equals(regNo)) {
+            if(Slot.parkingSlots[i] !=null && Slot.parkingSlots[i].getRegNo().equalsIgnoreCase(regNo)) {
                 Slot.parkingSlots[i]=null;
                 System.out.println("Slot Number "+(i+1)+" is now Available ");
                 vehicleFound=true;
@@ -38,7 +40,7 @@ public class InMemoryClient extends Client{
             }
         }
         if(!vehicleFound) {
-            System.err.println("Vehicle Not Found !!!");
+            System.out.println("Vehicle Not Found !!!");
         }
     }
     public void searchByRegNo() {
@@ -53,7 +55,7 @@ public class InMemoryClient extends Client{
             }
         }
         if(!vehicleFound) {
-            System.err.println("Vehicle Not Found !!!");
+            System.out.println("Vehicle Not Found !!!");
         }
     }
     public void regNumberByColour() {
@@ -67,7 +69,7 @@ public class InMemoryClient extends Client{
             }
         }
         if(!vehicleFound) {
-            System.err.println("No Vehicle Available with " +colour+ " Colour !!!");
+            System.out.println("No Vehicle Available with " +colour+ " Colour !!!");
         }
     }
     public void slotByColour() {
@@ -81,7 +83,24 @@ public class InMemoryClient extends Client{
             }
         }
         if(!vehicleFound) {
-            System.err.println("No Vehicle Available with " +colour+ " Colour !!!");
+            System.out.println("No Vehicle Available with " +colour+ " Colour !!!");
         }
+    }
+    public Vehicle availableSlot() {
+        Vehicle vehicle = registerVehicle();
+        if (vehicle !=null) {
+            for (int i = 0; i < slot.getParkingSlots().length; i++) {
+                //To check if entered registration no is already parked
+                if (slot.getParkingSlots()[i] != null && slot.getParkingSlots()[i].getRegNo().equalsIgnoreCase(vehicle.getRegNo())) {
+                    System.out.println("Duplicate Vehicle Info");
+                    return null;
+                } else {
+                    return vehicle;
+                }
+            }
+
+        }
+        System.out.println("Invalid Vehicle Info");
+        return null;
     }
 }
