@@ -6,9 +6,9 @@ import automatictg.clients.mongodbClient;
 import automatictg.utility.Menu;
 import automatictg.utility.ApplicationConfig;
 
+
 public class Main {
 	public static void main(String[] args) {
-
 		System.out.println("\t\t\t\t Automatic Parking System");
 		Menu menu=new Menu();
 		//To initialize .Properties file
@@ -17,8 +17,10 @@ public class Main {
 		BaseClient client=new InMemoryClient();
 		//Getting client type from property file
 		String clientName=applicationConfig.getClient();
+
 		if(clientName.equalsIgnoreCase("mySql")){
 			client=new MysqlClient();
+			applicationConfig.mysqlConnection();
 			MysqlClient mysqlClient= (MysqlClient) client;
 			//Creating table in database
 			mysqlClient.createTable();
@@ -62,7 +64,7 @@ public class Main {
 						break;
 				}
 			} catch (Exception e) {
-				System.err.println(e.getMessage());
+				System.out.println(e.getMessage());
 			}
 		}
 	}

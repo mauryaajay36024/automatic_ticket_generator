@@ -1,24 +1,43 @@
 package automatictg.utility;
+import com.mongodb.MongoClient;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
 
 public class ApplicationConfig {
-    private Connection connection;
-    private Statement statement;
-    private String client;
+    private static Connection connection;
+    private static Statement statement;
+    private  String client;
+    private String host;
+    private String mongoPort;
+    Properties properties=null;
+    MongoClient mongo=null;
 
     public ApplicationConfig() {
         try{
-            Properties properties=new Properties();
+            properties=new Properties();
             properties.load(new FileReader("src/main/resources/config.properties"));
-            Class.forName(properties.getProperty("DRIVER"));
-            this.setConnection(DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD")));
-            this.setStatement(connection.createStatement());
-            this.setClient(properties.getProperty("CLIENT"));
+            this.client=properties.getProperty("CLIENT");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getMongoPort() {
+        return mongoPort;
+    }
+
+    public void setMongoPort(String mongoPort) {
+        this.mongoPort = mongoPort;
     }
 
     public Connection getConnection() {
@@ -43,5 +62,19 @@ public class ApplicationConfig {
     public String getClient(){
         return client;
     }
+    public void mysqlConnection(){
+        try{
+            Class.forName(properties.getProperty("DRIVER"));
+            this.setConnection(DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD")));
+            this.setStatement(connection.createStatement());
+        }catch (Exception e){
+            System.out.println( e.getMessage());
 
+        }
+    }
+    public void mongoConnection(){
+        this.setHost(properties.getProperty("HOST"));
+        this.setMongoPort(properties.getProperty("mongoPort"));
+        mongo = new MongoClient( "localhost" , 27017 );
+    }
 }

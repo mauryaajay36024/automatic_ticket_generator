@@ -2,15 +2,13 @@ package automatictg.clients;
 import automatictg.core.Slot;
 import automatictg.core.Vehicle;
 import automatictg.utility.ApplicationConfig;
-
 import java.sql.*;
 import java.util.Scanner;
 
 public class MysqlClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
-    Slot slot=new Slot(5,20);
-    //Connection is created here with Mysql Database
     ApplicationConfig appConfig=new ApplicationConfig();
+    Slot slot=new Slot(5,20);
 
     public void vehicleEntry() {
         // registerVehicle method will only return vehicle object when entered info are valid.
@@ -192,7 +190,9 @@ public class MysqlClient extends BaseClient {
                     "registrationNumber CHAR(10) UNIQUE," +
                     "colour VARCHAR(10)," +
                     "slot int PRIMARY KEY)";
+
             appConfig.getStatement().execute(qry1);
+
             for (int i = 1; i <= slot.getCapacity(); i++) {
                 String qry2 = "INSERT INTO PARKING_SYSTEM(registrationNumber,colour,slot) VALUES(?,?,?)";
                 PreparedStatement statement = appConfig.getConnection().prepareStatement(qry2);
