@@ -25,8 +25,6 @@ public class Main {
 		}
 		else if(clientName.equalsIgnoreCase("mongodb")){
 			client=new mongodbClient();
-			//TODO
-			System.out.println("Inside mongo");
 		}
 		while(true) {
 			try {
