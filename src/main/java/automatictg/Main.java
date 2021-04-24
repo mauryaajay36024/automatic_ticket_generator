@@ -2,7 +2,7 @@ package automatictg;
 import automatictg.clients.BaseClient;
 import automatictg.clients.InMemoryClient;
 import automatictg.clients.MysqlClient;
-import automatictg.clients.mongodbClient;
+import automatictg.clients.MongodbClient;
 import automatictg.utility.Menu;
 import automatictg.utility.ApplicationConfig;
 
@@ -26,7 +26,13 @@ public class Main {
 			mysqlClient.createTable();
 		}
 		else if(clientName.equalsIgnoreCase("mongodb")){
-			client=new mongodbClient();
+			//connected to mongodb database
+			applicationConfig.mongoConnection();
+			client=new MongodbClient();
+			MongodbClient mongodbClient= (MongodbClient) client;
+			//Collection is created
+			mongodbClient.createCollection();
+
 		}
 		while(true) {
 			try {
@@ -65,6 +71,7 @@ public class Main {
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
+
 			}
 		}
 	}

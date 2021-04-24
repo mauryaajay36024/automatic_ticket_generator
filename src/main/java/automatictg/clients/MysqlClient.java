@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class MysqlClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
     ApplicationConfig appConfig=new ApplicationConfig();
-    Slot slot=new Slot(5,20);
+    Slot slot=new Slot(Integer.parseInt(appConfig.getProperties().getProperty("FLOOR")),Integer.parseInt(appConfig.getProperties().getProperty("CAPACITY")));
 
     public void vehicleEntry() {
         // registerVehicle method will only return vehicle object when entered info are valid.
