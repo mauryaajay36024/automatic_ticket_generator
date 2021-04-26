@@ -1,24 +1,36 @@
 package automatictg.utility;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
 
 public class ApplicationConfig {
-    private Connection connection;
-    private Statement statement;
-    private String client;
+    private static Connection connection;
+    private static Statement statement;
+    private static MongoDatabase database;
+    private static MongoCollection<Document> collection;
+    private static BasicDBObject updateFields=null;
+    private static BasicDBObject setQuery=null;
+    private static BasicDBObject whereQuery =null;
+    private Properties properties=null;
+    private  String client;
 
     public ApplicationConfig() {
         try{
-            Properties properties=new Properties();
+            properties=new Properties();
             properties.load(new FileReader("src/main/resources/config.properties"));
-            Class.forName(properties.getProperty("DRIVER"));
-            this.setConnection(DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD")));
-            this.setStatement(connection.createStatement());
-            this.setClient(properties.getProperty("CLIENT"));
+            this.client=properties.getProperty("CLIENT");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 
     public Connection getConnection() {
@@ -26,7 +38,7 @@ public class ApplicationConfig {
     }
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
+        ApplicationConfig.connection = connection;
     }
 
     public Statement getStatement() {
@@ -34,14 +46,69 @@ public class ApplicationConfig {
     }
 
     public void setStatement(Statement statement) {
-        this.statement = statement;
+        ApplicationConfig.statement = statement;
     }
 
-    public void setClient(String client) {
-        this.client = client;
+    public MongoDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(MongoDatabase database) {
+        ApplicationConfig.database = database;
+    }
+
+    public  MongoCollection<Document> getCollection() {
+        return collection;
+    }
+
+    public  void setCollection(MongoCollection<Document> collection) {
+        ApplicationConfig.collection = collection;
     }
     public String getClient(){
         return client;
     }
+    public BasicDBObject getUpdateFields() {
+        return updateFields;
+    }
 
+    public void setUpdateFields(BasicDBObject updateFields) {
+        ApplicationConfig.updateFields = updateFields;
+    }
+
+    public BasicDBObject getSetQuery() {
+        return setQuery;
+    }
+
+    public void setSetQuery(BasicDBObject setQuery) {
+        ApplicationConfig.setQuery = setQuery;
+    }
+
+    public BasicDBObject getWhereQuery() {
+        return whereQuery;
+    }
+
+    public void setWhereQuery(BasicDBObject whereQuery) {
+        ApplicationConfig.whereQuery = whereQuery;
+    }
+
+    public void mysqlConnection(){
+        try{
+            Class.forName(properties.getProperty("DRIVER"));
+            this.setConnection(DriverManager.getConnection(properties.getProperty("URL"),properties.getProperty("USER"),properties.getProperty("PASSWORD")));
+            this.setStatement(connection.createStatement());
+        }catch (Exception e){
+            System.out.println( e.getMessage());
+
+        }
+    }
+    public void mongoConnection(){
+        MongoClient mongoClient =new MongoClient(properties.getProperty("HOST"), Integer.parseInt(properties.getProperty("mongoPort")));
+        MongoDatabase database= mongoClient.getDatabase("near_db");
+        this.setDatabase(database);
+        MongoCollection<Document> collection=database.getCollection("parking_system");
+        this.setCollection(collection);
+        this.setUpdateFields(new BasicDBObject());
+        this.setSetQuery(new BasicDBObject());
+        this.setWhereQuery(new BasicDBObject());
+    }
 }

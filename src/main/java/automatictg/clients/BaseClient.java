@@ -1,6 +1,5 @@
 package automatictg.clients;
 import automatictg.core.Vehicle;
-
 import java.util.Scanner;
 
 public abstract class BaseClient {

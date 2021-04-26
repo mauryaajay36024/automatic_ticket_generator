@@ -2,10 +2,12 @@ package automatictg.clients;
 import java.util.Scanner;
 import automatictg.core.Slot;
 import automatictg.core.Vehicle;
+import automatictg.utility.ApplicationConfig;
 
 public class InMemoryClient extends BaseClient {
     Scanner sc=new Scanner(System.in);
-    Slot slot=new Slot(5,20);
+    ApplicationConfig appConfig=new ApplicationConfig();
+    Slot slot=new Slot(Integer.parseInt(appConfig.getProperties().getProperty("FLOOR")),Integer.parseInt(appConfig.getProperties().getProperty("CAPACITY")));
 
     public void vehicleEntry() {
         boolean flag=false;
