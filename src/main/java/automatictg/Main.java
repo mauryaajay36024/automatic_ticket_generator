@@ -1,8 +1,5 @@
 package automatictg;
-import automatictg.clients.BaseClient;
-import automatictg.clients.InMemoryClient;
-import automatictg.clients.MysqlClient;
-import automatictg.clients.MongodbClient;
+import automatictg.clients.*;
 import automatictg.utility.Menu;
 import automatictg.utility.ApplicationConfig;
 
@@ -32,6 +29,14 @@ public class Main {
 			MongodbClient mongodbClient= (MongodbClient) client;
 			//Collection is created
 			mongodbClient.createCollection();
+
+		}
+		else if(clientName.equalsIgnoreCase("redis")){
+			//connected to Redis database
+			applicationConfig.redisConnection();
+			client=new RedisClient();
+			RedisClient redisClient= (RedisClient) client;
+			redisClient.createDictionary();
 
 		}
 		while(true) {

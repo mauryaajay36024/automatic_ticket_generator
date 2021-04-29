@@ -4,6 +4,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import redis.clients.jedis.Jedis;
+
 import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
@@ -18,6 +20,7 @@ public class ApplicationConfig {
     private static BasicDBObject whereQuery =null;
     private Properties properties=null;
     private  String client;
+    private static Jedis jedis=null;
 
     public ApplicationConfig() {
         try{
@@ -91,6 +94,14 @@ public class ApplicationConfig {
         ApplicationConfig.whereQuery = whereQuery;
     }
 
+    public  Jedis getJedis() {
+        return jedis;
+    }
+
+    public  void setJedis(Jedis jedis) {
+        ApplicationConfig.jedis = jedis;
+    }
+
     public void mysqlConnection(){
         try{
             Class.forName(properties.getProperty("DRIVER"));
@@ -110,5 +121,8 @@ public class ApplicationConfig {
         this.setUpdateFields(new BasicDBObject());
         this.setSetQuery(new BasicDBObject());
         this.setWhereQuery(new BasicDBObject());
+    }
+    public void redisConnection(){
+        this.setJedis(new Jedis(properties.getProperty("HOST")));
     }
 }
