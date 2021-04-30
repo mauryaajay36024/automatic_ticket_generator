@@ -5,11 +5,17 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.http.HttpHost;
 import org.bson.Document;
+import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.rest.RestStatus;
 import redis.clients.jedis.Jedis;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -24,7 +30,7 @@ public class ApplicationConfig {
     private Properties properties=null;
     private  String client;
     private static Jedis jedis=null;
-    RestHighLevelClient elasticClient=null;
+    static RestHighLevelClient elasticClient=null;
 
     public ApplicationConfig() {
         try{
@@ -102,12 +108,12 @@ public class ApplicationConfig {
         ApplicationConfig.jedis = jedis;
     }
 
-    public RestHighLevelClient getElasticClient() {
+    public  RestHighLevelClient getElasticClient() {
         return elasticClient;
     }
 
-    public void setElasticClient(RestHighLevelClient elasticClient) {
-        elasticClient = elasticClient;
+    public  void setElasticClient(RestHighLevelClient elasticClient) {
+        ApplicationConfig.elasticClient = elasticClient;
     }
 
     public void mysqlConnection(){
@@ -135,13 +141,9 @@ public class ApplicationConfig {
     }
 
     public void elasticsearchConnection(){
-
-        ClientConfiguration clientConfiguration =
-                ClientConfiguration.builder().connectedTo("localhost:9200").build();
-        RestHighLevelClient client = RestClients.create(clientConfiguration).rest();
+        elasticClient = new RestHighLevelClient(RestClient.builder(
+                        new HttpHost("localhost", 9200, "http"),
+                        new HttpHost("localhost", 9201, "http")));
         this.setElasticClient(elasticClient);
-
-
-
     }
 }

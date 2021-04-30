@@ -41,11 +41,10 @@ public class Main {
 		}
 		else if(clientName.equalsIgnoreCase("elasticsearch")){
 			//connected to elasticsearch database
-			//TODO
-			System.out.println("before");
 			applicationConfig.elasticsearchConnection();
 			client=new ElasticsearchClient();
-
+			ElasticsearchClient elasticsearchClient= (ElasticsearchClient) client;
+			elasticsearchClient.createIndex();
 
 		}
 
