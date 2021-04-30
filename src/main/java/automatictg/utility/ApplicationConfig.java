@@ -3,7 +3,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.apache.http.HttpHost;
 import org.bson.Document;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import redis.clients.jedis.Jedis;
 
 import java.io.FileReader;
@@ -21,6 +24,7 @@ public class ApplicationConfig {
     private Properties properties=null;
     private  String client;
     private static Jedis jedis=null;
+    RestHighLevelClient elasticClient=null;
 
     public ApplicationConfig() {
         try{
@@ -86,10 +90,6 @@ public class ApplicationConfig {
         ApplicationConfig.setQuery = setQuery;
     }
 
-    public BasicDBObject getWhereQuery() {
-        return whereQuery;
-    }
-
     public void setWhereQuery(BasicDBObject whereQuery) {
         ApplicationConfig.whereQuery = whereQuery;
     }
@@ -100,6 +100,14 @@ public class ApplicationConfig {
 
     public  void setJedis(Jedis jedis) {
         ApplicationConfig.jedis = jedis;
+    }
+
+    public RestHighLevelClient getElasticClient() {
+        return elasticClient;
+    }
+
+    public void setElasticClient(RestHighLevelClient elasticClient) {
+        elasticClient = elasticClient;
     }
 
     public void mysqlConnection(){
@@ -124,5 +132,16 @@ public class ApplicationConfig {
     }
     public void redisConnection(){
         this.setJedis(new Jedis(properties.getProperty("HOST")));
+    }
+
+    public void elasticsearchConnection(){
+
+        ClientConfiguration clientConfiguration =
+                ClientConfiguration.builder().connectedTo("localhost:9200").build();
+        RestHighLevelClient client = RestClients.create(clientConfiguration).rest();
+        this.setElasticClient(elasticClient);
+
+
+
     }
 }

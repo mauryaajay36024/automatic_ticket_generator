@@ -39,6 +39,16 @@ public class Main {
 			redisClient.createDictionary();
 
 		}
+		else if(clientName.equalsIgnoreCase("elasticsearch")){
+			//connected to elasticsearch database
+			//TODO
+			System.out.println("before");
+			applicationConfig.elasticsearchConnection();
+			client=new ElasticsearchClient();
+
+
+		}
+
 		while(true) {
 			try {
 				switch(menu.mainMenu()) {
