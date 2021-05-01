@@ -43,9 +43,6 @@ public class Main {
 			//connected to elasticsearch database
 			applicationConfig.elasticsearchConnection();
 			client=new ElasticsearchClient();
-			ElasticsearchClient elasticsearchClient= (ElasticsearchClient) client;
-			elasticsearchClient.createIndex();
-
 		}
 
 		while(true) {
