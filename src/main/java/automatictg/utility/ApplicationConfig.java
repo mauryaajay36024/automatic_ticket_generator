@@ -142,8 +142,7 @@ public class ApplicationConfig {
 
     public void elasticsearchConnection(){
         elasticClient = new RestHighLevelClient(RestClient.builder(
-                        new HttpHost("localhost", 9200, "http"),
-                        new HttpHost("localhost", 9201, "http")));
+                        new HttpHost("localhost", 9200, "http")));
         this.setElasticClient(elasticClient);
     }
 }
