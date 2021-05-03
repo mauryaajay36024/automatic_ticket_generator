@@ -3,10 +3,19 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.apache.http.HttpHost;
 import org.bson.Document;
+import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.rest.RestStatus;
 import redis.clients.jedis.Jedis;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -21,6 +30,7 @@ public class ApplicationConfig {
     private Properties properties=null;
     private  String client;
     private static Jedis jedis=null;
+    static RestHighLevelClient elasticClient=null;
 
     public ApplicationConfig() {
         try{
@@ -86,10 +96,6 @@ public class ApplicationConfig {
         ApplicationConfig.setQuery = setQuery;
     }
 
-    public BasicDBObject getWhereQuery() {
-        return whereQuery;
-    }
-
     public void setWhereQuery(BasicDBObject whereQuery) {
         ApplicationConfig.whereQuery = whereQuery;
     }
@@ -100,6 +106,14 @@ public class ApplicationConfig {
 
     public  void setJedis(Jedis jedis) {
         ApplicationConfig.jedis = jedis;
+    }
+
+    public  RestHighLevelClient getElasticClient() {
+        return elasticClient;
+    }
+
+    public  void setElasticClient(RestHighLevelClient elasticClient) {
+        ApplicationConfig.elasticClient = elasticClient;
     }
 
     public void mysqlConnection(){
@@ -124,5 +138,11 @@ public class ApplicationConfig {
     }
     public void redisConnection(){
         this.setJedis(new Jedis(properties.getProperty("HOST")));
+    }
+
+    public void elasticsearchConnection(){
+        elasticClient = new RestHighLevelClient(RestClient.builder(
+                        new HttpHost(properties.getProperty("HOST"), Integer.parseInt(properties.getProperty("elasticPort")), properties.getProperty("scheme"))));
+        this.setElasticClient(elasticClient);
     }
 }
