@@ -1,5 +1,8 @@
 # Compiled class file
 *.class
+*.idea
+*.xml
+*.iml
 elasticsearch_index
 # Log file
 *.log
