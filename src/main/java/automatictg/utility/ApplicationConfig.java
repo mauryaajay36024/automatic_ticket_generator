@@ -142,7 +142,7 @@ public class ApplicationConfig {
 
     public void elasticsearchConnection(){
         elasticClient = new RestHighLevelClient(RestClient.builder(
-                        new HttpHost("localhost", 9200, "http")));
+                        new HttpHost(properties.getProperty("HOST"), Integer.parseInt(properties.getProperty("elasticPort")), properties.getProperty("scheme"))));
         this.setElasticClient(elasticClient);
     }
 }
